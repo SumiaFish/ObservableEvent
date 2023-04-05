@@ -16,6 +16,52 @@ For event processing, the code provides a `processing` method to implement the s
 
 To process an event, call `startExecution` on the dispatcher with an instance of the appropriate `ObservableEventExecution` subclass. For example, to process an `EventExecutionStart` event, create an instance of that class and call `startExecution(event)`.
 
+### Demo
+```
+// MARK: - Demo
+
+struct TestLoginEvent: ObservableEvent {
+    typealias Output = String
+    
+    let username: String
+    let pwd: String
+    
+    func processing() -> Observable<String> {
+        .just("success")
+    }
+}
+
+class Demo1 {
+    let disposeBag = DisposeBag()
+    
+    init() {
+        TestLoginEvent(username: "user", pwd: "pwd")
+            .startExecution()
+            .subscribe(
+                onNext: {
+                    print($0)
+                }
+            )
+            .disposed(by: disposeBag)
+    }
+}
+
+class Demo2 {
+    let disposeBag = DisposeBag()
+    
+    init() {
+        TestLoginEvent
+            .executionSuccessPublishSubject
+            .subscribe(
+                onNext: {
+                    print("username: \($0.event.username), pwd:\($0.event.pwd), output:\($0.output)")
+                }
+            )
+            .disposed(by: disposeBag)
+    }
+}
+```
+
 ## License
 
 `ObservableEvent` is released under the [MIT License](https://opensource.org/licenses/MIT).
