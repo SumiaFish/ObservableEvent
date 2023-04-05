@@ -1,0 +1,5 @@
+#import <Foundation/Foundation.h>
+@interface PodsDummy_Pods_ObservableEventDemo_ObservableEventDemoUITests : NSObject
+@end
+@implementation PodsDummy_Pods_ObservableEventDemo_ObservableEventDemoUITests
+@end
