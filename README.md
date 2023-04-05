@@ -1,6 +1,6 @@
 # ObservableEvent
 
-`ObservableEvent` is an event dispatcher used to handle a group of events that implement the `ObservableEvent` protocol.
+`ObservableEvent` is an event dispatcher used to handle a group of events that implement the `ObservableEvent` protocol.This framework relies on RxSwift.
 
 ## Usage
 
