@@ -18,6 +18,44 @@ To process an event, call `startExecution` on the dispatcher with an instance of
 
 ### Demo
 ```
+// MARK: - ObservableEvent
+
+protocol ObservableEvent {
+    associatedtype Output
+    
+    func processing() -> Observable<Output>
+}
+
+extension ObservableEvent {
+    static var eventTypeName: String {
+        String(reflecting: type(of: self.self))
+    }
+}
+
+extension ObservableEvent {
+    
+    func startExecution() -> Observable<Output> {
+        EventDispatcher.shared.executeEvent(self)
+    }
+    
+    static var executionStartPublishSubject: PublishSubject<EventExecutionStart<Self>> {
+        EventDispatcher.shared.startProvider.publishSubject(self, elementType: EventExecutionStart<Self>.self)
+    }
+    
+    static var executionSuccessPublishSubject: PublishSubject<EventReceivedOutput<Self>> {
+        EventDispatcher.shared.successProvider.publishSubject(self, elementType: EventReceivedOutput<Self>.self)
+    }
+
+    static var executionFailurePublishSubject: PublishSubject<EventReceivedError<Self>> {
+        EventDispatcher.shared.failureProvider.publishSubject(self, elementType: EventReceivedError<Self>.self)
+    }
+
+    static var executionCompletionPublishSubject: PublishSubject<EventExecutionCompleted<Self>> {
+        EventDispatcher.shared.completedProvider.publishSubject(self, elementType: EventExecutionCompleted<Self>.self)
+    }
+    
+}
+
 // MARK: - Demo
 
 struct TestLoginEvent: ObservableEvent {
